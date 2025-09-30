@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm360 - Farm Management System</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- App content will be dynamically loaded here -->
+        <div id="loading">
+            <div class="spinner"></div>
+            <p>Loading Farm360...</p>
+        </div>
+    </div>
+
+    <!-- Templates -->
+    <template id="login-template">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <img src="assets/logo.svg" alt="Farm360 Logo" class="logo">
+                    <h1>Farm360</h1>
+                    <p>Farm Management System</p>
+                </div>
+                <div class="auth-body">
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block">Login</button>
+                        </div>
+                        <div class="auth-links">
+                            <a href="#" id="forgot-password-link">Forgot Password?</a>
+                            <a href="#" id="register-link">Create Account</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="register-template">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <img src="assets/logo.svg" alt="Farm360 Logo" class="logo">
+                    <h1>Create Account</h1>
+                </div>
+                <div class="auth-body">
+                    <form id="register-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" name="firstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" name="lastName" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="role">Role</label>
+                            <select id="role" name="role" required>
+                                <option value="farmer">Farmer</option>
+                                <option value="manager">Manager</option>
+                                <option value="vet">Veterinarian</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block">Register</button>
+                        </div>
+                        <div class="auth-links">
+                            <a href="#" id="login-link">Already have an account? Login</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="dashboard-template">
+        <div class="dashboard-container">
+            <nav class="sidebar">
+                <div class="sidebar-header">
+                    <img src="assets/logo.svg" alt="Farm360 Logo" class="logo">
+                    <h2>Farm360</h2>
+                </div>
+                <ul class="sidebar-menu">
+                    <li class="active"><a href="#dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="#animals"><i class="fas fa-cow"></i> Animals</a></li>
+                    <li><a href="#crops"><i class="fas fa-seedling"></i> Crops</a></li>
+                    <li><a href="#inventory"><i class="fas fa-warehouse"></i> Inventory</a></li>
+                    <li><a href="#sales"><i class="fas fa-dollar-sign"></i> Sales</a></li>
+                    <li><a href="#expenses"><i class="fas fa-file-invoice-dollar"></i> Expenses</a></li>
+                    <li><a href="#reports"><i class="fas fa-chart-bar"></i> Reports</a></li>
+                    <li><a href="#vets"><i class="fas fa-user-md"></i> Veterinarians</a></li>
+                    <li><a href="#settings"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+                <div class="sidebar-footer">
+                    <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </nav>
+            <main class="content">
+                <header class="content-header">
+                    <div class="header-left">
+                        <button id="sidebar-toggle" class="sidebar-toggle">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <h1 id="page-title">Dashboard</h1>
+                    </div>
+                    <div class="header-right">
+                        <div class="user-menu">
+                            <span id="user-name">John Doe</span>
+                            <img src="assets/user-placeholder.svg" alt="User" id="user-avatar">
+                            <div class="user-dropdown">
+                                <a href="#profile"><i class="fas fa-user"></i> Profile</a>
+                                <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
+                                <a href="#" id="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <div id="content-container" class="content-container">
+                    <!-- Dashboard content will be loaded here -->
+                    <div class="dashboard-overview">
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon"><i class="fas fa-cow"></i></div>
+                                <div class="stat-info">
+                                    <h3>Animals</h3>
+                                    <p id="animal-count">0</p>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon"><i class="fas fa-seedling"></i></div>
+                                <div class="stat-info">
+                                    <h3>Crops</h3>
+                                    <p id="crop-count">0</p>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+                                <div class="stat-info">
+                                    <h3>Revenue</h3>
+                                    <p id="revenue-amount">$0.00</p>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+                                <div class="stat-info">
+                                    <h3>Expenses</h3>
+                                    <p id="expense-amount">$0.00</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dashboard-charts">
+                            <div class="chart-container">
+                                <h3>Profit/Loss</h3>
+                                <canvas id="profit-loss-chart"></canvas>
+                            </div>
+                            <div class="chart-container">
+                                <h3>Inventory Status</h3>
+                                <canvas id="inventory-chart"></canvas>
+                            </div>
+                        </div>
+                        <div class="recent-activities">
+                            <h3>Recent Activities</h3>
+                            <div class="activity-list" id="activity-list">
+                                <!-- Activities will be loaded here -->
+                                <div class="activity-item">
+                                    <div class="activity-icon"><i class="fas fa-plus"></i></div>
+                                    <div class="activity-info">
+                                        <p>New animal added: <strong>Bessie (A001)</strong></p>
+                                        <span class="activity-time">Today, 10:30 AM</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </template>
+
+    <!-- JavaScript Files -->
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/router.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

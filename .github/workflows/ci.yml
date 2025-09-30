@@ -1,0 +1,88 @@
+name: Farm360 CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  backend-test:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: farm360_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        cache: 'npm'
+        cache-dependency-path: backend/package-lock.json
+    
+    - name: Install backend dependencies
+      run: cd backend && npm ci
+    
+    - name: Run backend tests
+      run: cd backend && npm test
+      env:
+        NODE_ENV: test
+        DB_HOST: localhost
+        DB_PORT: 5432
+        DB_NAME: farm360_test
+        DB_USER: postgres
+        DB_PASSWORD: postgres
+        JWT_SECRET: test_secret_key
+        JWT_EXPIRES_IN: 1h
+  
+  frontend-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+    
+    - name: Install frontend test dependencies
+      run: |
+        cd frontend
+        npm init -y
+        npm install --save-dev jest
+    
+    - name: Run frontend tests
+      run: cd frontend && npx jest
+
+  deploy-backend:
+    needs: [backend-test, frontend-test]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Install Railway CLI
+      run: npm install -g @railway/cli
+    
+    - name: Deploy to Railway
+      run: railway up
+      working-directory: ./backend
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
